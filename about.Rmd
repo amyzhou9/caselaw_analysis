@@ -23,6 +23,8 @@ I also found an api called the news api which I can use to scrape multiple news 
 
 With the data, I can then turn the data into csvs to be cleaned. I have thus far scraped the 100 most recent BBC articles and have cleaned it in gather.rmd as an example. 
 
+My data collection code and scrapers can be found in this repo: https://github.com/amyzhou9/gov1005-data
+
 ## About the Author
 This project was made by Amy Zhou, a first year in Canaday who has a love for criminal justice, law, and news media. 
 
