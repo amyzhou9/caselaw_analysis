@@ -375,8 +375,11 @@ summary {
 </div>
 <div id="collection-of-data" class="section level2">
 <h2>Collection of Data</h2>
-<p>I intend to use python and beautiful soup to scrape for headlines by selecting for the tags surrounding headlines. For each news publication, this may be different. For example. Wall Street Journal artcile headlines are surrounded by the &lt;h3 class = &quot;WSJTheme-headline…&gt; tag, so searching for this can yield the headlines on a given page. Conveniently for the New York Times, I can use the newyorktimes package and the article search API to search for article metadata. Ideally I can then transfer the scraped data to be a csv and then pass the csv to my r project. I also found an api called the news api which I can use to scrape multiple news sites. This is however a little fiddly which I am still trying to figure out.</p>
-<p>However, there may be some tricky issues with going onto the next page with the scraper and finding articles from significantly long periods of time in the past. There are some methods that I have been Googling, but this could take some more work.</p>
+<p>I’m still testing out a few different ways of scraping to see which works the best for me.</p>
+<p>First I tried to use python and beautiful soup to scrape for headlines by selecting for the tags surrounding headlines. For each news publication, this may be different. For example. Wall Street Journal artcile headlines are surrounded by the &lt;h3 class = &quot;WSJTheme-headline…&gt; tag, so searching for this can yield the headlines on a given page. This can easily be customized to automatically paginize. However, some websites may be harder to scrape because of access codes and the difference in website structures used.</p>
+<p>Additionally, for the New York Times, I can use the newyorktimes package and the article search API to search for article metadata.</p>
+<p>I also found an api called the news api which I can use to scrape multiple news sites. This is however a little fiddly which I am still trying to figure out. Currently, I have to manually change the page variable to scrape each page of results but I am trying to figure out how to automate this. Also I have to be careful not to get blocked from these sites by perhaps putting a wait on the scraper to slow it down.</p>
+<p>With the data, I can then turn the data into csvs to be cleaned. I have thus far scraped the 100 most recent BBC articles and have cleaned it in gather.rmd as an example.</p>
 </div>
 <div id="about-the-author" class="section level2">
 <h2>About the Author</h2>
