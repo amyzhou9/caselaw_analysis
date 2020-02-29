@@ -1,0 +1,24 @@
+---
+title: "About"
+author: "Amy Zhou"
+date: "2/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview of Project
+I was inspired to do this project because of the coronavirus epidemic. In my memory, this feels like one of the longest news information cycles I have ever seen. Thus, I was curious at what factors keep events in the news longer: do illnesses just stay longer over other events such as economic ones? Furthermore, do some publications care about certain things for longer? Thus I want to scrape the headlines of articles from a variety of news publications search for keywords to track topic in the news.
+
+## Collection of Data
+I intend to use python and beautiful soup to scrape for headlines by selecting for the tags surrounding headlines. For each news publication, this may be different. For example. Wall Street Journal artcile headlines are surrounded by the <h3 class = "WSJTheme-headline...> tag, so searching for this can yield the headlines on a given page. Conveniently for the New York Times, I can use the newyorktimes package and the article search API to search for article metadata. Ideally I can then transfer the scraped data to be a csv and then pass the csv to my r project. I also found an api called the news api which I can use to scrape multiple news sites. This is however a little fiddly which I am still trying to figure out.
+
+However, there may be some tricky issues with going onto the next page with the scraper and finding articles from significantly long periods of time in the past. There are some methods that I have been Googling, but this could take some more work.
+
+## About the Author
+This project was made by Amy Zhou, a first year in Canaday who has a love for criminal justice, law, and news media. 
+
+
+**Github Repo Link**: https://github.com/amyzhou9/gov1005-final-project
