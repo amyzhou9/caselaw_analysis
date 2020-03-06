@@ -1,0 +1,17 @@
+---
+title: "Data Processing"
+author: "Amy Zhou"
+date: "3/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I have been struggling with data processing, and have thus been unsuccessful in turning my .sql databases into csv's that I can work with. However, I have finalized how I am getting data. I am using the megatable of data from here: https://sites.google.com/view/headlinedataset/home To get information about news timelines in 2014-2016. However, for recent news, I am using the newsapi scraper and the newyorktimes api to collect more recent data. Unfortunately, I have been super busy this past week and have been unable to make a lot of progress. Once I get the data, I plan on filtering for American news sources by filtering by the article urls. 
+
+I am currently also trying to figure out major news events to target so that when I use grepl and string detect I can target certain words such as Parkland, or Trump, or Coronavirus. 
+
+repo link: https://github.com/amyzhou9/gov1005-final-project
+
