@@ -17,14 +17,9 @@ library(data.table)
 library(reprex)
 ```
 ```{r data_intake, include = FALSE}
-north_carolina <- as.data.frame(stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")))  
+north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")) 
 
 
-```
-```{r}
-nc <- as.vector(north_carolina[[12]][2])
-
-nc
 ```
 
 ```{r subset_data, echo = FALSE}
@@ -45,7 +40,7 @@ nc_subset %>%
   geom_bar() +
   theme_classic() +
   labs(
-    title = "Case Law in North Carolina By Court",
+    title = "Case Law in North Carolina",
     subtitle = "Officially Published Cases(1892 - 2018)"
   ) +
   xlab(
@@ -53,20 +48,18 @@ nc_subset %>%
   ) +
   ylab(
     "Case Count"
-  ) +
-  scale_fill_discrete(name = "Court")
+  ) 
 
-
-#ggsave('graphics/north_carolina_case_ct.png')
-
-```
-```{r pub_plot, echo = FALSE}
-knitr::include_graphics('graphics/north_carolina_case_ct.png')
 
 ```
 
-## Discussion: 
-Looking at the graph, it is clear that the Supreme Court is far older than the Court of Appeals. At first I wondered if the lack of cases for the court of appeals was because of lack of records or an error in the database. However, after googling I discovered the the court of appeals was actually made to take some stress off the supreme court. This is interesting because there doesn't seem to be a steady increase in the number of cases that the supreme court handled leading up to the formation of the court of appeals in the 1960s. However, once the court of appeasl was formed, you can see a sharp dip in the number of cases that the supreme court took on. The court of appeal's formation, there appears to have been increases in the number of cases in the supreme court while the cases in the court of appeals have remained steady until the 2000s where there has been sharp fluctuations in the caseload for both courts.  
+
+## Disclaimer:
+This graph is a far simplified version of the graph I had earlier. Unfortunately after losing the csv I was working off of as well as the majority of my code, I was unable to manipulate the data as I had before (in the csv, the court dataframe column had been unnested so I could access the court names to court cases based on court). I tried to recreate the csv with write_csv, fwrite but ran into errors every time. I also tried to run unnest() also with no success. Thus I had to settle for just counting by year and not year and court. I am continuing to work on trying to figure out the csv or unnesting. 
+
+I however, also reconstructed some of my previous code in the form of north_carolina.rmd. It is on my repo here if you would like to see: https://github.com/amyzhou9/gov1005-final-project
+
+In this graph, you can see a steady increase in cases in the court system as might be expected. 
 
 
 
