@@ -1,0 +1,21 @@
+---
+title: "new_mexico"
+author: "Amy Zhou"
+date: "3/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(jsonlite)
+library(tidyverse)
+```
+
+```{r, include FALSE}
+new_mexico <- (stream_in(xzfile("/Users/amyzhou/Desktop/Gov1005/gov1005-data/New Mexico-20200302-xml/data/data.jsonl.xz")))
+```
+```{r}
+new_mexico
+```
+
+
