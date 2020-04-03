@@ -2,12 +2,19 @@ library(shiny)
 
 server <- function(input, output) {
   
-  output$distPlot <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+  output$testImage <- renderImage({
     
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
-  })
+    # I then passed the file path to filename
+    
+    filename <- normalizePath(file.path("graphics/NC_case_count.png"))
+    
+    # I created a list object, with the file name, the desired height and
+    # the alternative display name.
+    
+    list(src = filename,
+         height = 700,
+         alt = 'North Carolina Case Count')
+  }, deleteFile = FALSE)
+    
+   
 }

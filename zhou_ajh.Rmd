@@ -16,7 +16,7 @@ library(readr)
 library(data.table)
 library(reprex)
 ```
-```{r data_intake, include = FALSE}
+```{r data_intake, include = FALSE, cache = TRUE}
 north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")) 
 save(north_carolina, file ="raw-data/north_carolina.Rdata")
 
@@ -33,22 +33,6 @@ nc_subset <- north_carolina %>%
 
 ```
 ```{r plot, echo = FALSE}
-nc_subset %>% 
-  mutate(decision_date =  year(decision_date)) %>% 
-  filter(decision_date > 1890) %>% 
-  ggplot(aes(x = decision_date)) +
-  geom_bar() +
-  theme_classic() +
-  labs(
-    title = "Case Law in North Carolina",
-    subtitle = "Officially Published Cases(1892 - 2018)"
-  ) +
-  xlab(
-    "Year"
-  ) +
-  ylab(
-    "Case Count"
-  ) 
 
 north_carolina_plain <- north_carolina %>%
   select(!court)
@@ -56,12 +40,43 @@ north_carolina_plain <- north_carolina %>%
 court_data <- north_carolina$court %>% 
   rename(court_abbreviation = name_abbreviation, court_name = name, court_slug = slug, court_url = url, court_id = id)
 
-north_carolina_new <- cbind(north_carolina_plain,court_data )
+north_carolina_new <- cbind(north_carolina_plain,court_data ) %>% 
+  mutate(decision_date = as.Date(decision_date))
 
-north_carolina_new %>% group_by(court_name, decision_date) %>% tally()
+
 
 
 ```
+
+```{r}
+north_carolina_new %>% 
+  mutate(court_name = as.factor(court_name)) %>% 
+  mutate(decision_date =  year(decision_date)) %>% 
+  filter(court_name == "North Carolina Court of Appeals" |
+           court_name == "Supreme Court of North Carolina") %>% 
+  filter(decision_date > 1890) %>% 
+  ggplot(aes(x = decision_date, fill = court_name)) +
+  geom_bar() +
+  labs(
+    title = "Number of Cases in North Carolina Over Time",
+    subtitle = "Officially Published Cases from 1890 to 2018",
+    caption = "Data From the Library Innovation Lab's Case Law Project"
+  ) +
+  xlab(
+    "Year"
+  ) +
+  ylab(
+    "Case Count"
+  ) +
+  theme(
+    legend.title = element_blank()
+  )
+
+# ggsave('amy_zhou_final_project_app/graphics/NC_case_count.png')
+  
+```
+
+
 
 
 ## Disclaimer:

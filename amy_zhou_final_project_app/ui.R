@@ -13,5 +13,15 @@ ui <- navbarPage(
              )
             )
     
+  ),
+  
+  tabPanel("Case Counts",
+           fluidPage(
+             titlePanel("Case Counts"),
+             mainPanel(
+               plotOutput("testImage")
+             )
+           )
+    
   )
 )
