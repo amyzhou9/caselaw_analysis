@@ -1,0 +1,80 @@
+---
+title: "Milestone 5"
+author: "Amy Zhou"
+date: "3/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(janitor)
+library(tidyverse)
+library(readxl)
+library(jsonlite)
+library(lubridate)
+library(readr)
+library(data.table)
+library(reprex)
+```
+```{r data_intake, include = FALSE}
+north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")) 
+save(north_carolina, file ="raw-data/north_carolina.Rdata")
+
+```
+
+```{r subset_data, echo = FALSE}
+
+
+nc_subset <- north_carolina %>% 
+  mutate(decision_date = as.Date(decision_date)) %>% 
+  drop_na(decision_date) 
+
+
+
+```
+```{r plot, echo = FALSE}
+nc_subset %>% 
+  mutate(decision_date =  year(decision_date)) %>% 
+  filter(decision_date > 1890) %>% 
+  ggplot(aes(x = decision_date)) +
+  geom_bar() +
+  theme_classic() +
+  labs(
+    title = "Case Law in North Carolina",
+    subtitle = "Officially Published Cases(1892 - 2018)"
+  ) +
+  xlab(
+    "Year"
+  ) +
+  ylab(
+    "Case Count"
+  ) 
+
+north_carolina_plain <- north_carolina %>%
+  select(!court)
+
+court_data <- north_carolina$court %>% 
+  rename(court_abbreviation = name_abbreviation, court_name = name, court_slug = slug, court_url = url, court_id = id)
+
+north_carolina_new <- cbind(north_carolina_plain,court_data )
+
+north_carolina_new %>% group_by(court_name, decision_date) %>% tally()
+
+
+```
+
+
+## Disclaimer:
+This graph is a far simplified version of the graph I had earlier. Unfortunately after losing the csv I was working off of as well as the majority of my code, I was unable to manipulate the data as I had before (in the csv, the court dataframe column had been unnested so I could access the court names to court cases based on court). I tried to recreate the csv with write_csv, fwrite but ran into errors every time. I also tried to run unnest() also with no success. Thus I had to settle for just counting by year and not year and court. I am continuing to work on trying to figure out the csv or unnesting. 
+
+I however, also reconstructed some of my previous code in the form of north_carolina.rmd. It is on my repo here if you would like to see: https://github.com/amyzhou9/gov1005-final-project
+
+In this graph, you can see a steady increase in cases in the court system as might be expected. 
+
+
+
+
+
+
+
+

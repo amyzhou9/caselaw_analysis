@@ -1,0 +1,54 @@
+---
+title: "ms5_rpub"
+author: "Amy Zhou"
+date: "3/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(janitor)
+library(tidyverse)
+library(readxl)
+library(jsonlite)
+library(lubridate)
+library(readr)
+library(data.table)
+library(reprex)
+```
+```{r data_intake, include = FALSE}
+north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")) 
+
+
+```
+
+```{r subset_data, echo = FALSE}
+
+
+nc_subset <- north_carolina %>% 
+  mutate(decision_date = as.Date(decision_date)) %>% 
+  drop_na(decision_date) 
+
+
+
+```
+```{r plot, echo = FALSE}
+nc_subset %>% 
+  mutate(decision_date =  year(decision_date)) %>% 
+  filter(decision_date > 1890) %>% 
+  ggplot(aes(x = decision_date)) +
+  geom_bar() +
+  theme_classic() +
+  labs(
+    title = "Case Law in North Carolina",
+    subtitle = "Officially Published Cases(1892 - 2018)"
+  ) +
+  xlab(
+    "Year"
+  ) +
+  ylab(
+    "Case Count"
+  ) 
+
+
+```
