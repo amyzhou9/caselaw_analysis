@@ -1,0 +1,35 @@
+---
+title: "supreme_court"
+author: "Amy Zhou"
+date: "4/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(janitor)
+library(tidyverse)
+library(readr)
+library(jsonlite)
+library(lubridate)
+library(readr)
+library(data.table)
+library(reprex)
+library(miceadds)
+```
+
+```{r}
+load.Rdata('raw-data/SCDB.Rdata', 'SCDB') 
+```
+```{r}
+opinions <- read_csv('raw-data/all_opinions.csv') %>% 
+  clean_names() %>% 
+  head(10)
+```
+```{r}
+opinions
+```
+```{r}
+SCDB
+```
+

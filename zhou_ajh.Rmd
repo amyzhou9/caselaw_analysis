@@ -17,13 +17,14 @@ library(data.table)
 library(reprex)
 ```
 ```{r data_intake, include = FALSE, cache = TRUE}
-north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-xml/data/data.jsonl.xz")) 
-save(north_carolina, file ="raw-data/north_carolina.Rdata")
+north_carolina <- stream_in(xzfile("raw-data/North Carolina-20200302-text/data/data.jsonl.xz")) 
+#save(north_carolina, file ="raw-data/north_carolina.Rdata")
 
 ```
 
-```{r subset_data, echo = FALSE}
 
+
+```{r subset_data, echo = FALSE}
 
 nc_subset <- north_carolina %>% 
   mutate(decision_date = as.Date(decision_date)) %>% 
@@ -47,6 +48,16 @@ north_carolina_new <- cbind(north_carolina_plain,court_data ) %>%
 
 
 ```
+
+```{r}
+casebody<- north_carolina_new$casebody$data %>% 
+  head(10)
+
+
+casebody$opinions
+
+```
+
 
 ```{r}
 north_carolina_new %>% 

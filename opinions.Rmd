@@ -1,0 +1,83 @@
+---
+title: "opinions"
+author: "Amy Zhou"
+date: "4/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(janitor)
+library(tidyverse)
+library(readxl)
+library(jsonlite)
+library(lubridate)
+library(readr)
+library(data.table)
+library(reprex)
+library(stringr)
+```
+```{r}
+op <- north_carolina %>% 
+  select(id, casebody) %>% 
+  mutate(
+    row_num = c(1:97600)
+  ) 
+
+```
+
+
+
+<!-- ```{r} -->
+<!-- dat <- north_carolina$casebody %>%  -->
+<!--   tail(10) -->
+
+<!-- newdata <- dat$data -->
+
+<!-- newnewdat <- newdata$opinions -->
+
+<!-- x <- newnewdat[10] -->
+
+<!-- y <- t(x) -->
+
+<!-- b <- y[[1]]$text -->
+
+<!-- b -->
+
+<!-- ``` -->
+
+
+
+```{r}
+get_text <- function(row) {
+  
+  dat <- op$casebody 
+  newdata <- dat$data
+  newnewdat <- newdata$opinions
+  
+  x <- newnewdat[row]
+  y <- t(x)
+  
+  y[[1]]$text
+  
+}
+```
+
+
+
+```{r}
+texts <- op %>% 
+  mutate(
+    text = map(row_num, ~get_text(.))
+  ) %>% 
+  unnest(cols = c(text)) %>% 
+  select(id, text)
+```
+
+```{r}
+
+full_join(north_carolina, texts, by = "id")
+
+```
+
+
