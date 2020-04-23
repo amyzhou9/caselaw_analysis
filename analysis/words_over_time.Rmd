@@ -1,0 +1,59 @@
+---
+title: "Words Over Time"
+author: "Amy Zhou"
+date: "4/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(miceadds)
+library(ggplot2)
+library(lubridate)
+
+```
+
+```{r}
+
+load_data <- function(state){
+  s <- as.character(state)
+  arg <- paste("clean-data/", s, ".Rdata", sep = "")
+  load.Rdata(arg, s)
+  
+}
+
+graph_word <- function(state, word){
+  
+  w <- as.character(word)
+  s <- as.character(state)
+  t <- paste("Cases Involving", w, "in", s)
+  
+  state %>% 
+    select(name, decision_date, text, court_name) %>% 
+    filter(grepl(word, text)) %>% 
+    mutate(year = year(decision_date)) %>% 
+    group_by(year) %>% 
+    summarise(count = n()) %>% 
+    ggplot(aes(x = year, y = count, color = state)) +
+    geom_line() +
+    labs(
+      title = t
+    ) +
+    ylab(
+      "Number of Cases"
+    ) +
+    xlab(
+      "Year"
+    )
+    
+}
+
+```
+```{r}
+load_data("samoa")
+graph_word(samoa, "defendant")
+```
+

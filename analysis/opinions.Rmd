@@ -16,12 +16,15 @@ library(readr)
 library(data.table)
 library(reprex)
 library(stringr)
+library(miceadds)
 ```
 ```{r}
-op <- north_carolina %>% 
+load.Rdata('raw-data/test.Rdata', 'op')
+
+op <- op %>% 
   select(id, casebody) %>% 
   mutate(
-    row_num = c(1:97600)
+    row_num = c(1:nrow(.))
   ) 
 
 ```
@@ -76,7 +79,9 @@ texts <- op %>%
 
 ```{r}
 
-full_join(north_carolina, texts, by = "id")
+texts
+
+#full_join(north_carolina, texts, by = "id")
 
 ```
 
