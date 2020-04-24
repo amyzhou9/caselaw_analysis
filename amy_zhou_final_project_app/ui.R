@@ -1,4 +1,9 @@
 library(shiny)
+library(ggplot2)
+library(plotly)
+library(tidyr)
+
+source("helpers.R")
 
 ui <- navbarPage(
   
@@ -23,5 +28,20 @@ ui <- navbarPage(
              )
            )
     
-  )
+  ),
+  
+  tabPanel("Term Usage Over Time",
+           fluidPage(
+             titlePanel("Term Usage Over Time"),
+             
+             sidebarLayout(
+               sidebarPanel(
+                 selectInput("states", "State", states, selected = "American Samoa"),
+                 textInput("word", "Term", "divorce" )
+               ),
+               mainPanel(
+                plotOutput("wordImage")
+               )
+             )
+           ))
 )

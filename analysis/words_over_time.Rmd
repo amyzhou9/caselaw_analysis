@@ -13,6 +13,7 @@ library(ggplot2)
 library(miceadds)
 library(ggplot2)
 library(lubridate)
+library(gt)
 
 ```
 
@@ -25,35 +26,38 @@ load_data <- function(state){
   
 }
 
+read_data <- function(state){
+  s <- as.character(state)
+  arg <- paste("../clean-data/", s, ".rds", sep = "")
+  state <- readRDS(arg)
+  
+}
+
 graph_word <- function(state, word){
   
   w <- as.character(word)
   s <- as.character(state)
+  arg <- paste("../clean-data/", s, ".rds", sep = "")
   t <- paste("Cases Involving", w, "in", s)
   
-  state %>% 
+  state <- readRDS(arg)
+  
+  plot_data <- state %>% 
     select(name, decision_date, text, court_name) %>% 
     filter(grepl(word, text)) %>% 
     mutate(year = year(decision_date)) %>% 
     group_by(year) %>% 
     summarise(count = n()) %>% 
-    ggplot(aes(x = year, y = count, color = state)) +
-    geom_line() +
-    labs(
-      title = t
-    ) +
-    ylab(
-      "Number of Cases"
-    ) +
-    xlab(
-      "Year"
-    )
+    gt()
     
 }
 
 ```
 ```{r}
-load_data("samoa")
-graph_word(samoa, "defendant")
+graph_word("samoa", "divorce")
+
+
 ```
+
+
 

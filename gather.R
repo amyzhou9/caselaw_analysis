@@ -62,16 +62,22 @@ text_setup <- function(frame){
   
 full_data <- full_join(frame, texts, by = "id")
   
-full_data
+full_data %>% 
+  select(court_name, name, text, id, decision_date)
 }
 
 # ak <- court_setup('raw-data/ak.Rdata')
 # alaska <- text_setup(ak) 
+# amsam <- court_setup('raw-data/amsam.Rdata')
+# samoa <- text_setup(amsam)
+
 amsam <- court_setup('raw-data/amsam.Rdata')
 samoa <- text_setup(amsam)
-saveRDS(samoa, file = "clean-data/samoa.rds")
 
 
 # save(alaska, file = "clean-data/alaska.Rdata")
 # save(samoa, file = "clean-data/samoa.Rdata")
+
+saveRDS(samoa, file = "clean-data/samoa.rds")
+
 
