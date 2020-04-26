@@ -128,7 +128,9 @@ server <- function(input, output) {
          legend.text = element_text(size = 10)
        )
     
-     return(p)
+     q <- ggplotly(p)
+     
+     return(q)
     
   })
   
@@ -136,7 +138,7 @@ server <- function(input, output) {
     plot_data()
   })
 
-  output$caseCount <- renderPlot({
+  output$caseCount <- renderPlotly({
     
     count_data()
     

@@ -44,7 +44,7 @@ ui <- navbarPage(
                  textInput("word", "Term", "Harvard" )
                ),
                mainPanel(
-                plotOutput("wordImage", height = 700)
+                plotlyOutput("wordImage", height = 700)
                )
              )
            ))
