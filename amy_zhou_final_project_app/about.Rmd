@@ -1,32 +1,23 @@
----
-title: "About"
-author: "Amy Zhou"
-date: "2/28/2020"
-output: html_document
----
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Overview of Project
-I was inspired to do this project because of the coronavirus epidemic. In my memory, this feels like one of the longest news information cycles I have ever seen. Thus, I was curious at what factors keep events in the news longer: do illnesses just stay longer over other events such as economic ones? Furthermore, do some publications care about certain things for longer? Thus I want to scrape the headlines of articles from a variety of news publications search for keywords to track topic in the news.
+I've always been interested in the law and in particular case law as it is this law that becomes used as precedents in other cases where things may be a little bit more grey than simply: the law says this therefore this is the decision. Thus, when I discovered the case law dataset from the Library Innovation Lab at the Harvard Law School, I was super interested. I wanted to see how laws have changed over time. What topics are more common in modern day case law than in previous years. After all case law essentially tells us exactly what people fought over and cared about in each generation.
 
 ## Collection of Data
-I'm still testing out a few different ways of scraping to see which works the best for me. 
+I was granted researcher access to the case law dataset from the Case Law Project at the Library Innovation labs. Thus, I was granted unlimited API and download access. You can find the data here: case.law
 
-First I tried to use python and beautiful soup to scrape for headlines by selecting for the tags surrounding headlines. For each news publication, this may be different. For example. Wall Street Journal artcile headlines are surrounded by the <h3 class = "WSJTheme-headline...> tag, so searching for this can yield the headlines on a given page. This can easily be customized to automatically paginize. However, some websites may be harder to scrape because of access codes and the difference in website structures used. 
+I downloaded the bulk data for all 50 states and began working with it. I immediately ran into some issues. First, the actual text of the cases were nested in a  list within a data frame within another data frame, so I had to write a function(with the help of Alyssa). to extract this and bind it to the data. A similar issue occurred with the court names and court slugs. 
 
-Additionally, for the New York Times, I can use the newyorktimes package and the article search API to search for article metadata.
+I also downloaded the Supreme Court Opinions data from http://scdb.wustl.edu/ and another csv with Supreme Court Opinions from: https://www.kaggle.com/gqfiddler/scotus-opinions 
 
-I also found an api called the news api which I can use to scrape multiple news sites. This is however a little fiddly which I am still trying to figure out. Currently, I have to manually change the page variable to scrape each page of results but I am trying to figure out how to automate this. Also I have to be careful not to get blocked from these sites by perhaps putting a wait on the scraper to slow it down.
+From here, my main goal was to get a sense of the development of the court system and the rise of court cases in each state. Then I wanted to assess the salience of various topics at different times in different states, and finally see how opinions of those topics have changed. 
 
-With the data, I can then turn the data into csvs to be cleaned. I have thus far scraped the 100 most recent BBC articles and have cleaned it in gather.rmd as an example. 
-
-My data collection code and scrapers can be found in this repo: https://github.com/amyzhou9/gov1005-data
 
 ## About the Author
-This project was made by Amy Zhou, a first year in Canaday who has a love for criminal justice, law, and news media. 
+This project was made by Amy Zhou, a first year who will be in Cabot House and has a love for criminal justice, law, and data. 
 
 
 **Github Repo Link**: https://github.com/amyzhou9/gov1005-final-project

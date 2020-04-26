@@ -1,6 +1,6 @@
 library(shiny)
-library(ggplot2)
 library(plotly)
+library(ggplot2)
 library(tidyr)
 
 source("helpers.R")
@@ -23,12 +23,16 @@ ui <- navbarPage(
   tabPanel("Case Counts",
            fluidPage(
              titlePanel("Case Counts"),
+             
+             sidebarLayout(
+               sidebarPanel(
+                 selectInput("states1","State", states, selected = "Connecticut")
+               ),
              mainPanel(
-               plotOutput("testImage")
+               plotOutput("caseCount", height = 700)
              )
            )
-    
-  ),
+           )),
   
   tabPanel("Term Usage Over Time",
            fluidPage(
@@ -36,11 +40,11 @@ ui <- navbarPage(
              
              sidebarLayout(
                sidebarPanel(
-                 selectInput("states", "State", states, selected = "American Samoa"),
-                 textInput("word", "Term", "divorce" )
+                 selectInput("states2", "State", states, selected = "Massachusetts"),
+                 textInput("word", "Term", "Harvard" )
                ),
                mainPanel(
-                plotOutput("wordImage")
+                plotOutput("wordImage", height = 700)
                )
              )
            ))
