@@ -397,7 +397,33 @@ supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id"))
 
 
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
-               
+
+
+words <- c("abortion", "guns", "harvard", "discrimination", "slavery", "defendant")
+
+test_w <- c("abortion", "defendant")
+
+
+supreme_court <- readRDS('clean-data/supreme_court.rds') %>% 
+  select(caseName, text, dateDecision) %>% 
+  mutate(year = year(dateDecision)) %>% 
+  mutate(words = paste(unlist(text), collapse = " ")) %>% 
+  mutate(occurence = str_count(text, "abortion")) %>% 
+  filter(occurence >= 5) 
+
+
+supreme_court_words <- supreme_court %>% 
+  head(1) %>% 
+  unnest_tokens(word, words) 
+
+s <- supreme_court_words %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(sentiment) %>% 
+  spread(sentiment, n, fill = 0) %>% 
+  mutate(intensity = postive - negative)
+  
+
+
 
 
 

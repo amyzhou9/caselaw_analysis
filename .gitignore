@@ -9,3 +9,6 @@
 rsconnect/
 raw-data/*
 clean-data/*
+
+
+caselaw_analysis/data/*
