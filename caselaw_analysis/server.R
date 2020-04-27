@@ -143,5 +143,14 @@ server <- function(input, output) {
     count_data()
     
   })
+  
+  output$genderImage <- renderImage({
+    
+    filename <- normalizePath(file.path("graphics/female_supreme.png"))
+    
+    list(src = filename,
+         height = 600,
+         alt = "genderplot")
+     }, deleteFile = FALSE)
     
 }
