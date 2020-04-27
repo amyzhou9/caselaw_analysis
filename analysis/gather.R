@@ -13,6 +13,10 @@ read_in <- function(path){
   stream_in(xzfile(path)) 
 }
 
+# read in each file and save it to raw-data in an Rdata format. I did not use
+# map because every few states, R would crash and I didn't want to restart the
+# map function every time.
+
 # # ak <- read_in('raw-data/Alaska-20200302-text/data/data.jsonl.xz')
 # # save(ak, file = "raw-data/ak.Rdata")
 # # amsam <- read_in('raw-data/American Samoa-20200302-text/data/data.jsonl.xz')
@@ -134,59 +138,78 @@ read_in <- function(path){
 # ri <- read_in('raw-data/Rhode Island-20200302-text/data/data.jsonl.xz')
 # save(ri, file = "raw-data/ri.Rdata")
 # 
-# 
-# court_setup <- function(path){
-#   x <- load.Rdata(path, "x")
-# 
-#   x_plain <- x %>%
-#     select(!court)
-# 
-#   court_data <- x$court %>% 
-#     rename(court_abbreviation = name_abbreviation, court_name = name, court_slug = slug, court_url = url, court_id = id)
-#   
-#   location <- x$jurisdiction %>% 
-#     rename(jurisdiction_name = name, jurisdiction_state = name_long, 
-#            jurisdiction_whitelisted = whitelisted, jurisdiction_url = url, 
-#            jurisdiction_id = id, jurisdiction_slug = slug)
-# 
-#   court_sorted <- cbind(x_plain,court_data,location) %>% 
-#     mutate(decision_date = as.Date(decision_date),
-#            row_num = c(1:nrow(.)))
-#   
-#   court_sorted
-#   
-# }
-# 
-# text_setup <- function(frame){
-#   text_pre <- frame %>% 
-#     select(id, row_num, casebody) 
-#   
-#   get_text <- function(row){
-#     
-#     dat <- text_pre$casebody 
-#     newdata <- dat$data
-#     newnewdat <- newdata$opinions
-#     
-#     x <- newnewdat[row]
-#     y <- t(x)
-#     
-#     y[[1]]$text
-#     
-#   }
-#   
-#   texts <- text_pre %>% 
-#     mutate(
-#       text = map(row_num, ~get_text(row = .))
-#     ) %>% 
-#     unnest(cols = c(text)) %>% 
-#     select(id, text)
-#   
-#   
-# full_data <- full_join(frame, texts, by = "id")
-#   
-# full_data
-# }
-# 
+
+
+
+# I then created a court_setup function to first load in the rdata file and save
+# it as the path as a character so that ak.Rdata would be saved in an object
+# called ak. I then selected all the non_court variables that I could unnest the
+# court variable(a list of dataframes into its individual variables) Then I
+# binded it back to the original dataframe. I did the same for jurisdiction.
+
+ court_setup <- function(path){
+  x <- load.Rdata(path, "x")
+ 
+   x_plain <- x %>%
+    select(!court)
+ 
+   court_data <- x$court %>% 
+     rename(court_abbreviation = name_abbreviation, court_name = name, court_slug = slug, court_url = url, court_id = id)
+   
+   location <- x$jurisdiction %>% 
+     rename(jurisdiction_name = name, jurisdiction_state = name_long, 
+            jurisdiction_whitelisted = whitelisted, jurisdiction_url = url, 
+            jurisdiction_id = id, jurisdiction_slug = slug)
+ 
+   court_sorted <- cbind(x_plain,court_data,location) %>% 
+    mutate(decision_date = as.Date(decision_date),
+           row_num = c(1:nrow(.)))
+   
+   court_sorted
+   
+ }
+ 
+ 
+# I then selected the variables I needed from a frame passed to it. I then had
+# to extract the actual text of the data as it was nested within several
+# dataframes and lists. First I used $ to get down to the opinions later. Then I
+# assigned the row to x and then transposed it so that the list would be
+# flipped. Then I selected that and passed it back to be binded back to the
+# dataframe. I mapped through each row of the data to do this.
+ 
+ text_setup <- function(frame){
+   text_pre <- frame %>% 
+     select(id, row_num, casebody) 
+   
+   get_text <- function(row){
+     
+     dat <- text_pre$casebody 
+     newdata <- dat$data
+     newnewdat <- newdata$opinions
+     
+     x <- newnewdat[row]
+     y <- t(x)
+     
+     y[[1]]$text
+     
+       }
+   
+   texts <- text_pre %>% 
+    mutate(
+      text = map(row_num, ~get_text(row = .))
+    ) %>% 
+    unnest(cols = c(text)) %>% 
+     select(id, text)
+   
+   
+ full_data <- full_join(frame, texts, by = "id")
+   
+full_data
+
+ }
+ 
+# I ran court_setup and text_setup on each state. 
+ 
 # # ak <- court_setup('raw-data/ak.Rdata')
 # # alaska <- text_setup(ak) 
 # # amsam <- court_setup('raw-data/amsam.Rdata')
@@ -369,7 +392,9 @@ read_in <- function(path){
 # saveRDS(alabama, file = "clean-data/alabama.rds")
 
 
-
+# to set up the supreme court data I loaded in both of my supreme court datasets
+# from Washington universty and and then selected the necessary variables. Then
+# I used rbind to join the two year sets (one modern and one old cases)
 
 load.Rdata('raw-data/SCDB_2019_01_caseCentered_Citation 2.Rdata', 'SCDB')
 load.Rdata('raw-data/SCDB_Legacy_05_caseCentered_Citation.Rdata', 'SCDB_legacy')
@@ -386,8 +411,11 @@ SCDB_legacy <- SCDB_legacy %>%
 
 SCDB_full <- rbind(SCDB_modern,SCDB_legacy)
 
+# I then saved it to raw-data
+
 saveRDS(SCDB_full, file = "raw-data/SCDB_full.rds")
 
+# then I took my supreme court opinions data and joined it onto the rest of the supreme court metadata. 
 
 opinions <- read_csv("raw-data/all_opinions.csv") %>% 
   select(category, text, scdb_id)
@@ -398,6 +426,8 @@ supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id"))
 
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
 
+
+# I am still working on this part to do sentiment analysis. 
 
 words <- c("abortion", "guns", "harvard", "discrimination", "slavery", "defendant")
 
