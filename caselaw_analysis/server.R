@@ -127,10 +127,8 @@ server <- function(input, output) {
          legend.title = element_blank(),
          legend.text = element_text(size = 10)
        )
-    
-     q <- ggplotly(p)
      
-     return(q)
+     return(p)
     
   })
   
@@ -138,7 +136,7 @@ server <- function(input, output) {
     plot_data()
   })
 
-  output$caseCount <- renderPlotly({
+  output$caseCount <- renderPlot({
     
     count_data()
     
@@ -149,7 +147,7 @@ server <- function(input, output) {
     filename <- normalizePath(file.path("graphics/female_supreme.png"))
     
     list(src = filename,
-         height = 600,
+         height = 800,
          alt = "genderplot")
      }, deleteFile = FALSE)
     
