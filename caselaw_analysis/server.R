@@ -10,6 +10,8 @@ source("helpers.R")
 
 server <- function(input, output) {
   
+  # switched the aesthetically pleasing inputs to function readable inputs
+  
   plot_data <- reactive({
     state <- switch(input$states2,
                     "Alabama" = "alabama","Alaska" = "alaska",
@@ -43,14 +45,21 @@ server <- function(input, output) {
                     "Wyoming" = "wyoming", 
                     "American Samoa" = "samoa", "Guam" = "guam")
     
+    # created the arguments to pass to the function to read in data
+    
     s <- as.character(state)
     arg <- paste('data/', s, '.rds', sep = "")
+    
+    # read in data 
     
     state_data <- readRDS(arg)
     
     req(input$word)
     
     t <- paste("Cases Involving", input$word, "in", input$states2)
+    
+    # using the input word and state created a plot of occurence of that word
+    # over time
     
     plot_data <- state_data %>% 
       select(name, decision_date, text, court_name) %>% 
@@ -79,6 +88,9 @@ server <- function(input, output) {
   })
   
   count_data <- reactive({
+    
+    # Switched from input to function readable inputs
+    
     state <- switch(input$states1,
                     "Alabama" = "alabama","Alaska" = "alaska",
                     "Arizona" = "arizona","Arkansas" = "arkansas",
@@ -111,10 +123,14 @@ server <- function(input, output) {
                     "Wyoming" = "wyoming", 
                     "American Samoa" = "samoa", "Guam" = "guam")
     
+    # like above manipulate input to be a proper input for the readRDS function
+    
     s <- as.character(state)
     arg <- paste('data/', s, '.rds', sep = "")
     
     state_data <- readRDS(arg)
+    
+    # I then passed the state to count the number of cases per year by court 
     
      p <- state_data %>% 
        mutate(year = year(decision_date)) %>% 
@@ -132,15 +148,21 @@ server <- function(input, output) {
     
   })
   
+  # outputs the word over time graph
+  
   output$wordImage <- renderPlot({
     plot_data()
   })
 
+  # outputs the cases over time graph
+  
   output$caseCount <- renderPlot({
     
     count_data()
     
   })
+  
+  # pulls the gender model graph from the graphics folder and then renders it. 
   
   output$genderImage <- renderImage({
     

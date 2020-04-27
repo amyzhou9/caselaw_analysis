@@ -431,6 +431,7 @@ saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
 
 words <- c("abortion", "guns", "harvard", "discrimination", "slavery", "defendant")
 
+
 test_w <- c("abortion", "defendant")
 
 
