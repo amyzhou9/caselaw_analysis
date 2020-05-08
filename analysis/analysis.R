@@ -118,24 +118,76 @@ total_year <- supreme_court %>%
   summarise(total = n())
 
 
-  
-  
-  
+occurences <- supreme_court %>% 
   select(caseName, text, dateDecision) %>% 
   mutate(year = year(dateDecision)) %>% 
   mutate(words = paste(unlist(text), collapse = " ")) %>% 
   mutate(occurence = str_count(text, "abortion")) %>% 
+  filter(occurence > 4) %>% 
   group_by(year) %>% 
-  sum(occurence > 5)
+  summarise(num_cases = n())
   
 
+ratio <- full_join(total_year, occurences) %>% 
+  mutate_all(~replace(.,is.na(.), 0))
 
-word_intensity <- function(row){
- unnest_tokens(row[],words)
+
+by_year <- supreme_court %>% 
+  select(decision_date, text) %>% 
+  mutate(year = year(decision_date)) %>% 
+  mutate(words = paste(unlist(text), collapse = " ")) %>% 
+  mutate(occurence = str_count(text, "abortion")) %>% 
+  filter(occurence > 4) %>% 
+  select(year, words) %>% 
+  group_by(year) %>% 
+  summarise(text = paste(words,collapse = " "))
+
+
+supreme_court <- readRDS('clean-data/supreme_court.rds')
+
+
+supreme_abortion <- supreme_court %>% 
+  select(caseName, text, dateDecision) %>% 
+  mutate(year = year(dateDecision), 
+         row = 1:nrow(.)) %>% 
+  mutate(words = paste(unlist(text), collapse = " ")) %>% 
+  mutate(occurence = str_count(text, "abortion")) %>% 
+  filter(occurence > 4) %>% 
+  select(caseName, words) %>% 
+  head(10)
+
+
+
+
+
+word_count <- function(x){
   
+  supreme_court <- readRDS('clean-data/supreme_court.rds')
   
+  simple <- supreme_court %>% 
+    select(caseName, text) %>% 
+    mutate(words = paste(unlist(text), collapse = " "))
+  
+  count <- simple %>% 
+    slice(x) %>% 
+    unnest_tokens(word, words) %>% 
+    summarise(count = n())
+  
+  count
+    
 }
-supreme_court_words <- supreme_court %>% 
+
+
+x <- tibble(count = map(c(1:10), ~word_count(.)))
+
+test <- supreme_court %>% 
+  head(10) %>% 
+  mutate(row = 1:nrow(.)) %>% 
+  mutate(word_count = map(row, ~ word_count(.)))
+
+
+
+supreme_court_words <- supreme_abortion %>% 
   head(1) %>% 
   unnest_tokens(word, words) 
 
@@ -152,6 +204,24 @@ s <- supreme_court_words %>%
   mutate(intensity = positive + negative) %>% 
   mutate(ratio = intensity/total_words)
 
+
+samoa <- readRDS('clean-data/samoa.rds') 
+
+s <- samoa %>% 
+  select(name, text) %>% 
+  mutate(words = paste(unlist(text), collapse = " ")) %>% 
+  unlist(words) %>% 
+  select(name, text) %>% 
+  head(1) 
+  
+
+viesentiment_analysis <- function(row){
+  words %>% 
+    unnest_tokens(word,words)
+}
+
+
+apply(samoa, 1, sentiment_analysis)
 
 
 

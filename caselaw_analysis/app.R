@@ -8,7 +8,6 @@
 #
 
 library(shiny)
-library(shinythemes)
 
 # Get the UI and Server files
 

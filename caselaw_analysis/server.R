@@ -5,7 +5,6 @@ library(ggplot2)
 library(plotly)
 library(lubridate)
 library(dplyr)
-library(shinythemes)
 library(tm)
 library(SnowballC)
 library(wordcloud)
@@ -101,7 +100,11 @@ server <- function(input, output) {
         legend.position = "top",
         legend.title = element_blank(),
         legend.text = element_text(size = 10)
-      )
+      ) +
+      ylab(
+        "Case Count"
+      ) +
+      xlab("Year")
     
     return(p)
     
@@ -147,7 +150,8 @@ server <- function(input, output) {
                                          "proceedings", "conclusion", "district", "charges", "appeals", 
                                          "attorney's", "courts", "determination", "purposes", "purpose", "authority",
                                          "requires", "require", "concluded", "jurisdiction", "counsel", "provision",
-                                         "affirm", "provide", "hold", "provided", "clause", "commission"))
+                                         "affirm", "provide", "hold", "provided", "clause", "commission", 
+                                         "defendant's","court's"))
     
     tidy_text <- state_text %>% 
       head(1) %>% 
