@@ -46,7 +46,7 @@ server <- function(input, output) {
     
     plot_data <- state_data %>% 
       select(name, decision_date, text, court_name) %>% 
-      filter(grepl(input$word, text)) %>% 
+      filter(grepl(input$word, text, ignore.case = TRUE)) %>% 
       mutate(year = year(decision_date)) %>% 
       group_by(year) %>% 
       summarise(count = n()) %>% 
@@ -92,7 +92,7 @@ server <- function(input, output) {
     
     req(input$word)
     
-    t <- paste("Percentage of Cases Involving", input$word, "in", input$states2)
+    t <- paste("Proportion of Cases Involving", input$word, "in", input$states2)
     
     # using the input word and state created a plot of occurence of that word
     # over time
@@ -106,7 +106,7 @@ server <- function(input, output) {
     contains_data <- state_data %>% 
       select(decision_date, text) %>% 
       mutate(year = year(decision_date)) %>% 
-      filter(grepl(input$word, text)) %>% 
+      filter(grepl(input$word, text, ignore.case = TRUE)) %>% 
       group_by(year) %>% 
       summarise(contains = n())
     
