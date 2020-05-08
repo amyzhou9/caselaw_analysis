@@ -438,20 +438,16 @@ saveRDS(SCDB_full, file = "raw-data/SCDB_full.rds")
 opinions <- read_csv("raw-data/all_opinions.csv") %>% 
   select(category, text, scdb_id)
 
-
-
 supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id")) 
 
-
-
-
-
-saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
+# I mutated the variables in order to match the other states
 
 supreme_court <- readRDS("clean-data/supreme_court.rds") %>% 
   mutate(decision_date = dateDecision) %>% 
   mutate(court_name = "U.S. Supreme Court") %>% 
   mutate(name = caseName)
+
+# I then saved it to clean data
 
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
 
@@ -486,7 +482,7 @@ s <- supreme_court_words %>%
   
 
 
-al <- readRDS('clean-data/alabama.rds')
+
 
 
 

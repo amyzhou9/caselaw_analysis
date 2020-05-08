@@ -11,7 +11,9 @@ ui <- navbarPage(theme = shinytheme("superhero"),
   # Application title
   "Caselaw Through the Years",
   
-  # opening panel is the casecount model
+  # opening panel is the casecount model. I chose this as this is the only one
+  # that loads fast enough to not look like a mistake.
+  
   tabPanel("Case Counts",
            fluidPage(
              titlePanel("Case Counts"),
@@ -22,7 +24,10 @@ ui <- navbarPage(theme = shinytheme("superhero"),
              sidebarLayout(
                sidebarPanel(
                  
-                 # takes an input of a state from the dropdown.
+                 # takes an input of a state from the dropdown. I also added
+                 # some commentary to guide viewers through the models. Instead
+                 # of dedicating another page, I felt that this would be more
+                 # interesting.
                  
                  selectInput("states1","State", states, selected = "Connecticut"),
                  br(),
@@ -46,16 +51,28 @@ ui <- navbarPage(theme = shinytheme("superhero"),
            )
            )),
   
+  # My next tab is the tab explores the words within caselaw over time and
+  # location
+  
   tabPanel("Term Salience",
            fluidPage(
              titlePanel("Term Salience"),
+             
+             # Provides an intro to caselaw and why term analysis is interesting
+              
              h3("What is case law? In some regards, case law really is just the official record of
                 people's fights over the years mixed with fancy language and some sort of decorum. Thus, I wanted
                 to observe the salience of certain topics over time. What have people fought about over time?
                 Below, you can select various options to view the most frequent words 
                 used in a given place and time displayed in a wordcloud and
                 also graph certain words over time."),
+             h4("*NOTE*: Nothing will show up unless you click submit, and it will be VERY slow to load (it's a lot of data)"),
              br(),
+             
+             # The first section consists of the wordcloud. I created a select
+             # input to select location and a text input to enter the desired
+             # year. I also added some commentary. 
+             
              sidebarLayout(
                sidebarPanel(
                  h4("Most Frequent Terms"),
@@ -83,7 +100,10 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                sidebarPanel(
                  
                  # takes a dropdown input and a text input for the word to be
-                 # tracked
+                 # tracked. I also added some commentary to give instructions
+                 # and guide people through what terms are interesting to look
+                 # at.
+                 
                  h4("Term Usage Over Time"),
                  p("Enter your desired term and jurisdiction and click submit 
                   to see the number of cases per year that involved that term.
@@ -103,7 +123,9 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                    it didn't show up in the courts.")
                ),
                mainPanel(
-                 # outputs the given graph from the server
+                 
+                 # outputs the given graphs from the server
+                 
                 plotOutput("wordImage", height = 350),
                 plotOutput("wordRatio", height = 350)
                )
@@ -118,10 +140,17 @@ ui <- navbarPage(theme = shinytheme("superhero"),
              ),
              sidebarLayout(
                sidebarPanel(
-                 h4(" I used glm to create a binary modeling of the likelihood of winning by gender. Given the estimate of 0.6077, we can estimate this
+                 
+                 # I added some commentary explaining the process and what the model means. 
+                 
+                 h5 (" I used glm to create a binary modeling of the likelihood of winning by gender. Given the estimate of 0.6077, we can estimate this
                   to mean that if a petitioner is a female they will have a predicted increase of 0.15 in the probability that they will win the case.Some caveats to this
                   model are that the codebook of SCDB where I got the petitioner identities only designated a portion of the petitioners by gender.However, if we assume that those undesignated roles
-                  are generally men/an even mix of men and women, we still will see that women in general perform better than men in court", align = "center"),
+                  are generally men/an even mix of men and women, we still will see that women in general perform better than men in court."),
+                 h5(" This observation is interesting and in some ways counterintuitive. I however, have a few theories. First, perhaps since females were unable to be in court regularly 
+                    until later, they on average benefitted from the well-developed legal representation system that developed through time. Another theory is one raised by my Expos preceptor, 
+                    Dr. Sparsha Saha. She suggested that perhaps attorneys require a higher standard for cases that they take on for female petitioners."),
+                 br(),
                  
                  # I included the gt table html from the graphics folder
                  
@@ -140,7 +169,6 @@ ui <- navbarPage(theme = shinytheme("superhero"),
   
   tabPanel("About",
            fluidPage(
-             titlePanel("About"),
              mainPanel(
               
                 # includes the about.html that I created from an rmd

@@ -11,15 +11,17 @@ I've always been interested in the law and in particular case law as it is this 
 ## Collection of Data
 I was granted researcher access to the case law dataset from the Case Law Project at the Library Innovation labs. Thus, I was granted unlimited API and download access. You can find the data here: case.law
 
-I downloaded the bulk data for all 50 states and began working with it. I immediately ran into some issues. First, the actual text of the cases were nested in a  list within a data frame within another data frame, so I had to write a function(with the help of Alyssa). to extract this and bind it to the data. A similar issue occurred with the court names and court slugs. 
+I downloaded the bulk data for all 50 states and began working with it. I immediately ran into some issues. First, the actual text of the cases were nested in a  list within a data frame within another data frame, so I had to write a function(with the help of Alyssa) to extract this and bind it to the data. A similar issue occurred with the court names and court slugs. Due to the size and the complex nature of the data, cleaning the data(or rather figuring out how to clean it) took up most of my time. 
 
 I also downloaded the Supreme Court Opinions data from http://scdb.wustl.edu/ and another csv with Supreme Court Opinions from: https://www.kaggle.com/gqfiddler/scotus-opinions 
 
-From here, my main goal was to get a sense of the development of the court system and the rise of court cases in each state. Then I wanted to assess the salience of various topics at different times in different states, and finally see how opinions of those topics have changed. 
+From here, my main goal was to get a sense of the development of the court system and the rise of court cases in each state. Then I wanted to assess the salience of various topics at different times in different states. 
+
+I also noticed that the supreme court data code book indicated female petitioners so I was also curious to see if gender affected the chance of a party winning. 
 
 
 ## About the Author
 This project was made by Amy Zhou, a first year who will be in Cabot House and has a love for criminal justice, law, and data. 
 
 
-**Github Repo Link**: https://github.com/amyzhou9/gov1005-final-project
+**Github Repo Link**: https://github.com/amyzhou9/caselaw_analysis
