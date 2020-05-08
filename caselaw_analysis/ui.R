@@ -57,9 +57,10 @@ ui <- navbarPage(theme = shinytheme("superhero"),
              sidebarLayout(
                sidebarPanel(
                  h4("Most Frequent Terms"),
-                 p("Select your desired jurisdiction and year and click submit to see the most commonly used words in caselaw during this time."),
+                 p("Select your desired jurisdiction and year and click submit to see the most commonly used words in caselaw during this time.
+                   Unfortunately, many of the earlier cases do not have enough data to generate a wordcloud so will throw an error."),
                  selectInput("states3", "State", states, selected = "Massachusetts"),
-                 textInput("year", "Year", "1990"),
+                 textInput("year", "Year", "2000"),
                  actionButton("submit3", "Submit")
                ),
                mainPanel(
@@ -68,14 +69,16 @@ ui <- navbarPage(theme = shinytheme("superhero"),
              )
            ),
            fluidPage(
-             titlePanel("Term Usage Over Time"),
              
              sidebarLayout(
                sidebarPanel(
                  
                  # takes a dropdown input and a text input for the word to be
                  # tracked
-                 
+                 h4("Term Usage Over Time"),
+                 p("Enter your desired term and jurisdiction and click submit 
+                  to see the number of cases per year that involved that term.
+                   Below, you can see the percentage of cases that involved the term for each year."),
                  selectInput("states2", "State", states, selected = "Massachusetts"),
                  textInput("word", "Term", "Harvard"),
                  actionButton("submit2", "Submit")
