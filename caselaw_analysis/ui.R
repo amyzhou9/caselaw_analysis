@@ -50,8 +50,9 @@ ui <- navbarPage(theme = shinytheme("superhero"),
              titlePanel("Term Salience"),
              h3("What is case law? In some regards, case law really is just the official record of
                 people's fights over the years mixed with fancy language and some sort of decorum. Thus, I wanted
-                to observe the salience of certain topics over time. Below, you can select various options
-                to  view the most frequent words used in a given place and time displayed in a wordcloud and
+                to observe the salience of certain topics over time. What have people fought about over time?
+                Below, you can select various options to view the most frequent words 
+                used in a given place and time displayed in a wordcloud and
                 also graph certain words over time."),
              br(),
              sidebarLayout(
@@ -61,7 +62,14 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                    Unfortunately, many of the earlier cases do not have enough data to generate a wordcloud so will throw an error."),
                  selectInput("states3", "State", states, selected = "Massachusetts"),
                  textInput("year", "Year", "2000"),
-                 actionButton("submit3", "Submit")
+                 actionButton("submit3", "Submit"),
+                 br(),
+                 br(),
+                 h5("Interesting Notes:"),
+                 p("Although, you are unable to go back too far for most of these states, it is still interesting to see what 
+                   going back a hundred years shows. For example, 1890 and the Supreme court will generate a word cloud that has the term 
+                   'Alaska' as many settlers went there for gold during this time. Additionally, going to the 1900s in Massachusetts will display 
+                   the salience of the term 'tribal' indicating that tribal issues were still quite common during this time.")
                ),
                mainPanel(
                  plotOutput("wordCloud", height = 750)
@@ -78,10 +86,20 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                  h4("Term Usage Over Time"),
                  p("Enter your desired term and jurisdiction and click submit 
                   to see the number of cases per year that involved that term.
-                   Below, you can see the percentage of cases that involved the term for each year."),
+                   Below, you can see the percentage of cases that involved the term for each year.
+                   Also please be patient as there is a lot of data, so it will take while."),
                  selectInput("states2", "State", states, selected = "Massachusetts"),
                  textInput("word", "Term", "Harvard"),
-                 actionButton("submit2", "Submit")
+                 actionButton("submit2", "Submit"),
+                 br(),
+                 br(),
+                 h5("Interesting Notes:"),
+                 p("I highly encourage people to graph terms that they care about, for example graphing 'guns' in Massachusetts
+                   shows a huge recent spike. Thus it is clear to see that case law reflects our passions and new stories pretty well
+                   which makes sense. Only arguments that are important enough or controversial enough make it to the higher courts. However, 'marijuana'
+                   seems to go against this in Colorado as the term was most used in the 1970s not when it was recently legalized. This may perhaps suggest that
+                   the reason it was legalized so quickly (relative to other states) was that it wasn't actually that controversial in Colorado. Thus, 
+                   it didn't show up in the courts.")
                ),
                mainPanel(
                  # outputs the given graph from the server
