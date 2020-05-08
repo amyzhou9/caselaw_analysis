@@ -34,7 +34,8 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                  p("Of course Montana has lower courts, however, my data set only contains all officially published cases. 
                    States can choose to vary which court cases are unofficially published(usually faster) and which are officially published. 
                    Generally speaking, the highest courts are officially published while lower courts are not. Since the Colorado District Courts
-                   act as appeal courts in some cases, perhaps Colorado counts them as higher courts.")
+                   act as appeal courts in some cases, perhaps Colorado counts them as higher courts. New Jersey, however seems to choose to
+                   officially publish practically all of its courts.")
                ),
              mainPanel(
                
@@ -103,7 +104,8 @@ ui <- navbarPage(theme = shinytheme("superhero"),
                ),
                mainPanel(
                  # outputs the given graph from the server
-                plotOutput("wordImage", height = 700)
+                plotOutput("wordImage", height = 350),
+                plotOutput("wordRatio", height = 350)
                )
              )
            ),

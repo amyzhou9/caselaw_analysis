@@ -215,13 +215,44 @@ s <- samoa %>%
   head(1) 
   
 
-viesentiment_analysis <- function(row){
+sentiment_analysis <- function(row){
   words %>% 
     unnest_tokens(word,words)
 }
 
 
 apply(samoa, 1, sentiment_analysis)
+
+
+samoa_data <- readRDS('clean-data/massachusetts.rds')
+
+plot_data <- samoa_data %>% 
+  select(name, decision_date, text, court_name) %>%
+  mutate(year = year(decision_date)) %>% 
+  group_by(year) %>% 
+  summarise(total = n())
+
+
+contains_data <- samoa_data %>% 
+  select(decision_date, text) %>% 
+  mutate(year = year(decision_date)) %>% 
+  filter(grepl("Harvard", text)) %>% 
+  group_by(year) %>% 
+  summarise(contains = n())
+
+ratio_data <- full_join(plot_data, contains_data) %>% 
+  mutate_all(~replace(.,is.na(.), 0)) %>% 
+  mutate(prop = contains/total) %>% 
+  filter(year != 0) %>% 
+  ggplot(aes(x = year, y = prop)) +
+  geom_line()
+
+ratio_data
+
+
+  
+  
+ 
 
 
 

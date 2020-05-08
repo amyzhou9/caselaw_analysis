@@ -70,6 +70,72 @@ server <- function(input, output) {
     
   })
   
+  word_ratio <- eventReactive(input$submit2,{
+    
+    state <- switch(input$states2,
+                    "Alaska" = "alaska",
+                    "Colorado" = "colorado",
+                    "Massachusetts" = "massachusetts",
+                    "Montana" = "montana",
+                    "New Jersey(You're welcome Yao)" = "new_jersey",
+                    "Washington" = "washington", 
+                    "American Samoa" = "samoa", "Supreme Court" = "supreme_court")
+    
+    # created the arguments to pass to the function to read in data
+    
+    s <- as.character(state)
+    arg <- paste('data/', s, '.rds', sep = "")
+    
+    # read in data 
+    
+    state_data <- readRDS(arg)
+    
+    req(input$word)
+    
+    t <- paste("Percentage of Cases Involving", input$word, "in", input$states2)
+    
+    # using the input word and state created a plot of occurence of that word
+    # over time
+    
+    total_data <- state_data %>% 
+      select(name, decision_date, text, court_name) %>%
+      mutate(year = year(decision_date)) %>% 
+      group_by(year) %>% 
+      summarise(total = n())
+    
+    contains_data <- state_data %>% 
+      select(decision_date, text) %>% 
+      mutate(year = year(decision_date)) %>% 
+      filter(grepl(input$word, text)) %>% 
+      group_by(year) %>% 
+      summarise(contains = n())
+    
+    ratio_data <- full_join(plot_data, contains_data) %>% 
+      mutate_all(~replace(.,is.na(.), 0)) %>% 
+      filter(year != 0) %>% 
+      mutate(prop = contains/total)
+    
+    ratio_plot <- ratio_data %>% 
+      ggplot(aes(x = year, y = prop)) +
+      geom_line(color = "red") +
+      labs(
+        title = t
+      ) +
+      xlab(
+        "Year"
+      ) +
+      ylab(
+        "Proportion of Cases"
+      ) +
+      theme(
+        plot.title = element_text(size = 50)
+      ) +
+      theme_classic()
+    
+    return(ratio_plot)
+    
+  })
+  
   case_count <- reactive({
     
     state <- switch(input$states1,
@@ -201,5 +267,11 @@ server <- function(input, output) {
          height = 800,
          alt = "genderplot")
      }, deleteFile = FALSE)
+  
+  output$wordRatio <- renderPlot({
+    
+    word_ratio()
+    
+  })
     
 }
