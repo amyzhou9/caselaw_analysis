@@ -4,7 +4,11 @@ library(ggplot2)
 library(tidyr)
 library(shinythemes)
 
+# allows the inputs to call the state vector by sourcing from helpers
+
 source("helpers.R")
+
+# tried shinytheme, did not work
 
 ui <- navbarPage(theme = shinytheme("superhero"),
   
