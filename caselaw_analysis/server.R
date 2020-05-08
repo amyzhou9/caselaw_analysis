@@ -134,7 +134,7 @@ server <- function(input, output) {
     # new variable of the proportion of cases by dividing the number of cases
     # that contained the word by the total number of cases in the year.
     
-    ratio_data <- full_join(plot_data, contains_data) %>% 
+    ratio_data <- full_join(total_data, contains_data) %>% 
       mutate_all(~replace(.,is.na(.), 0)) %>% 
       filter(year != 0) %>% 
       mutate(prop = contains/total)
