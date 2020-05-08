@@ -101,6 +101,62 @@ female_model %>%
 gtsave("female_model.html", inline_css = TRUE)  
 
 
+# I am still working on this part to do sentiment analysis. 
+
+words <- c("abortion", "guns", "harvard", "discrimination", "slavery", "defendant")
+
+
+test_w <- c("abortion", "defendant")
+
+
+
+supreme_court <- readRDS('clean-data/supreme_court.rds') 
+
+total_year <- supreme_court %>% 
+  mutate(year = year(decision_date)) %>% 
+  group_by(year) %>% 
+  summarise(total = n())
+
+
+  
+  
+  
+  select(caseName, text, dateDecision) %>% 
+  mutate(year = year(dateDecision)) %>% 
+  mutate(words = paste(unlist(text), collapse = " ")) %>% 
+  mutate(occurence = str_count(text, "abortion")) %>% 
+  group_by(year) %>% 
+  sum(occurence > 5)
+  
+
+
+word_intensity <- function(row){
+ unnest_tokens(row[],words)
+  
+  
+}
+supreme_court_words <- supreme_court %>% 
+  head(1) %>% 
+  unnest_tokens(word, words) 
+
+total_words <-  supreme_court %>% 
+  head(1) %>% 
+  unnest_tokens(word, words) %>% 
+  summarise(total = n()) %>% 
+  pull(total)
+
+s <- supreme_court_words %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(sentiment) %>% 
+  spread(sentiment, n, fill = 0) %>% 
+  mutate(intensity = positive + negative) %>% 
+  mutate(ratio = intensity/total_words)
+
+
+
+
+
+
   
 
 

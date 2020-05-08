@@ -2,17 +2,18 @@ library(shiny)
 library(plotly)
 library(ggplot2)
 library(tidyr)
+library(shinythemes)
 
 source("helpers.R")
 
-ui <- navbarPage(
+ui <- navbarPage(theme = shinytheme("cyborg"),
   
   # Application title
   "Caselaw Through the Years",
   
   # opening panel is the casecount model
   tabPanel("Case Counts",
-           fluidPage(
+           fluidPage(theme = shinytheme("united"),
              titlePanel("Case Counts"),
              
              sidebarLayout(
@@ -33,6 +34,20 @@ ui <- navbarPage(
   
   tabPanel("Term Usage Over Time",
            fluidPage(
+             titlePanel("Most Frequent Words"), 
+             
+             sidebarLayout(
+               sidebarPanel(
+                 selectInput("states3", "State", states, selected = "Massachusetts"),
+                 textInput("year", "Year", "1990"),
+                 actionButton("submit3", "Submit")
+               ),
+               mainPanel(
+                 plotOutput("wordCloud", height = 750)
+               )
+             )
+           ),
+           fluidPage(
              titlePanel("Term Usage Over Time"),
              
              sidebarLayout(
@@ -42,15 +57,16 @@ ui <- navbarPage(
                  # tracked
                  
                  selectInput("states2", "State", states, selected = "Massachusetts"),
-                 textInput("word", "Term", "Harvard")
+                 textInput("word", "Term", "Harvard"),
+                 actionButton("submit2", "Submit")
                ),
                mainPanel(
                  # outputs the given graph from the server
-                 
                 plotOutput("wordImage", height = 700)
                )
              )
-           )),
+           ),
+          ),
   
   tabPanel("Gender and the Supreme Court",
            fluidPage(

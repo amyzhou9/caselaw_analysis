@@ -1,5 +1,6 @@
 library(janitor)
 library(tidyverse)
+library(dplyr)
 library(readxl)
 library(jsonlite)
 library(lubridate)
@@ -83,8 +84,8 @@ read_in <- function(path){
 # # save(nv, file = "raw-data/nv.Rdata")
 # # nh <- read_in('raw-data/New Hampshire-20200302-text/data/data.jsonl.xz')
 # # save(nh, file = "raw-data/nh.Rdata")
-# # nj <- read_in('raw-data/New Jersey-20200302-text/data/data.jsonl.xz')
-# # save(nj, file = "raw-data/nj.Rdata")
+ nj <- read_in('raw-data/New Jersey-20200302-text/data/data.jsonl.xz')
+ save(nj, file = "raw-data/nj.Rdata")
 # # nm <- read_in('raw-data/New Mexico-20200302-text/data/data.jsonl.xz')
 # # save(nm, file = "raw-data/nm.Rdata")
 # # ny <- read_in('raw-data/New York-20200302-text/data/data.jsonl.xz')
@@ -123,8 +124,8 @@ read_in <- function(path){
 # save(vt, file = "raw-data/vt.Rdata")
 # virg <- read_in('raw-data/Virgin Islands-20200302-text/data/data.jsonl.xz')
 # save(virg, file = "raw-data/virg.Rdata")
-# wa <- read_in('raw-data/Washington-20200302-text/data/data.jsonl.xz')
-# save(wa, file = "raw-data/wa.Rdata")
+wa <- read_in('raw-data/Washington-20200303-text/data/data.jsonl.xz')
+ save(wa, file = "raw-data/wa.Rdata")
 # wv <- read_in('raw-data/West Virginia-20200302-text/data/data.jsonl.xz')
 # save(wv, file = "raw-data/wv.Rdata")
 # wi <- read_in('raw-data/Wisconsin-20200302-text/data/data.jsonl.xz')
@@ -390,6 +391,23 @@ full_data
 #   select(id, name, name_abbreviation, 
 #          decision_date, jurisdiction_state, court_name, text)
 # saveRDS(alabama, file = "clean-data/alabama.rds")
+ 
+ nj <- court_setup('raw-data/nj.Rdata')
+ new_jersey <- text_setup(nj) %>% 
+   select(id, name, name_abbreviation, 
+           decision_date, jurisdiction_state, court_name, text)
+  saveRDS(new_jersey, file = "clean-data/new_jersey.rds")
+  
+
+  wa <- court_setup('raw-data/wa.Rdata')
+  washington <- text_setup(wa) %>% 
+    select(id, name, name_abbreviation, 
+           decision_date, jurisdiction_state, court_name, text)
+  saveRDS(washington, file = "clean-data/washington.rds")
+  
+  
+  
+ 
 
 
 # to set up the supreme court data I loaded in both of my supreme court datasets
@@ -421,10 +439,21 @@ opinions <- read_csv("raw-data/all_opinions.csv") %>%
   select(category, text, scdb_id)
 
 
-supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id"))
+
+supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id")) 
+
+
+
 
 
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
+
+supreme_court <- readRDS("clean-data/supreme_court.rds") %>% 
+  mutate(decision_date = dateDecision)
+
+saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
+
+
 
 
 # I am still working on this part to do sentiment analysis. 
@@ -455,6 +484,7 @@ s <- supreme_court_words %>%
   
 
 
+al <- readRDS('clean-data/alabama.rds')
 
 
 

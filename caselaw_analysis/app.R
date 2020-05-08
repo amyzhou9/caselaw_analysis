@@ -8,10 +8,11 @@
 #
 
 library(shiny)
+library(shinythemes)
 
 # Get the UI and Server files
 
-source('ui.R', local = TRUE)
+source('ui.R')
 source('server.R')
 
 
