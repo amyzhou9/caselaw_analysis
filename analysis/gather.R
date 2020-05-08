@@ -449,7 +449,9 @@ supreme_court <- full_join(SCDB_full, opinions, by = c("caseId" = "scdb_id"))
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
 
 supreme_court <- readRDS("clean-data/supreme_court.rds") %>% 
-  mutate(decision_date = dateDecision)
+  mutate(decision_date = dateDecision) %>% 
+  mutate(court_name = "U.S. Supreme Court") %>% 
+  mutate(name = caseName)
 
 saveRDS(supreme_court, file = "clean-data/supreme_court.rds")
 
