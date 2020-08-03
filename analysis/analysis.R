@@ -42,6 +42,8 @@ names(gender.labs) <- c("Female", "Male/Unknown")
 model <- supreme_court_name %>% 
   mutate(year = year(dateDecision),
          gender = as.factor(gender)) %>% 
+  filter(partyWinning == 1 | partyWinning == 0) %>% 
+  filter(gender == 1 | gender == 0) %>% 
   group_by(year, gender) %>% 
   summarise(perc_win = mean(partyWinning),
             emplogit = qlogis(perc_win)) %>% 
@@ -69,11 +71,21 @@ model
 
 # I then made the gender and partywinning variables factors so that I could
 # construct a binary model from it.
+
+
   
+
 female  <- supreme_court_name %>% 
-  mutate(gender = ifelse(gender == "female", 1, 0),
-         partyWinning = as.factor(partyWinning)) %>% 
-  mutate(gender = as.factor(gender))
+  mutate(gender = ifelse(gender == "female", 1, 0)) %>% 
+  filter(partyWinning == 1 | partyWinning == 0) %>% 
+  select(dateDecision, gender, partyWinning) %>% 
+  mutate(year = year(dateDecision)) 
+  
+
+female
+  
+
+
 
 # I then used glm to make a model to predict how gender affects winning. I then
 # created a gt table out of the tidy model.
@@ -93,7 +105,7 @@ female_model <- glm(partyWinning ~ gender, family = "binomial", data = female) %
   )
   
 
-
+female_model
 # I then saved the gt table to be used in shiny.
 
 female_model %>% 
@@ -154,7 +166,7 @@ supreme_abortion <- supreme_court %>%
   mutate(occurence = str_count(text, "abortion")) %>% 
   filter(occurence > 4) %>% 
   select(caseName, words) %>% 
-  head(10)
+  head(2)
 
 
 
@@ -181,7 +193,7 @@ word_count <- function(x){
 x <- tibble(count = map(c(1:10), ~word_count(.)))
 
 test <- supreme_court %>% 
-  head(10) %>% 
+  head(2) %>% 
   mutate(row = 1:nrow(.)) %>% 
   mutate(word_count = map(row, ~ word_count(.)))
 
@@ -216,8 +228,12 @@ s <- samoa %>%
   
 
 sentiment_analysis <- function(row){
-  words %>% 
-    unnest_tokens(word,words)
+  w <- words %>% 
+    unnest_tokens(word,words) %>% 
+    summarise(count = n()) %>% 
+    pull(count)
+  
+  w
 }
 
 

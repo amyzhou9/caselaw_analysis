@@ -482,7 +482,11 @@ s <- supreme_court_words %>%
   
 
 
+massachusetts <- readRDS('clean-data/massachusetts.rds')
 
+cut <- massachusetts %>% 
+  mutate(year = year(decision_date)) %>% 
+  filter(year > 1910)
 
-
+saveRDS(cut, 'clean-data/massachusetts.rds')
 
